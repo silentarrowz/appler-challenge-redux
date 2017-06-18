@@ -8,7 +8,7 @@ class TableData extends Component{
       
       if(searchTerm.length>0){
        
-        if(x.name.toLowerCase().indexOf(searchTerm)!==-1){
+        if(x.name.toLowerCase().indexOf(searchTerm)===0){
          return <li><img src={x.image}/>  {x.name}</li>
       }else{
         return null;

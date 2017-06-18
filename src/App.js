@@ -4,26 +4,26 @@ import  './App.css';
 import {connect} from 'react-redux';
 import {contacts} from './constants/contacts.js';
 import {searchTerm} from './actions.js';
+import {searchName} from './reducer';
 console.log(contacts);
 
 class App extends Component{
   constructor(){
     super();
-    this.state={
-      name:''
-    }
-    this.handleChange=this.handleChange.bind(this);
-  }
-  handleChange(e){
-    var term = e.target.value;
     
+    //this.handleChange=this.handleChange.bind(this);
+  }
+  handleChange=(e)=>{
+    var term = e.target.value;
+    /*
     this.setState({
       name:e.target.value
     });
-    
-    //this.props.dispatch(searchTerm(term));
-    
-    
+    */
+   
+   this.props.inputEntered(e.target.value);
+    console.log("in handleChange: ", e.target.value);
+    //console.log(this.state.name);
   }
   
   render(){
@@ -38,8 +38,9 @@ class App extends Component{
 
           </table>
                     </div>
-        <input type="text" value={this.state.name} onChange={this.handleChange} />
-       <TableData searchTerm={this.state.name} contacts={contacts} />
+                    <form>
+        <input type="text" value={this.props.nameOne} onChange={this.handleChange} /></form>
+       <TableData searchTerm={this.props.nameOne} contacts={contacts} />
         
         </div>
     )
@@ -48,10 +49,23 @@ class App extends Component{
 
 
 
-function mapStateToProps(state) {
+var mapStateToProps = state => {
+  console.log("in mapStateToProps", state.term);
   return {
-    term: state.term
+
+    nameOne : state.term
   }
 }
 
-export default connect(mapStateToProps)(App);
+var mapDispatchToProps = dispatch => {
+  return {
+      inputEntered:(term) => {
+        console.log("in mapDispatch: ", term);
+      dispatch(searchTerm(term));
+    }
+  }
+}
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
